@@ -310,11 +310,12 @@ class SectionBase(object):
 
 
     def __enter__(self):
-        output.write('\n\\{0}{{{1}}}\n'.format(self.command, self.title))
+        output.write('\\{0}{{{1}}}\n'.format(self.command, self.title))
 
 
     def __exit__(self, exc_type, exc_value, traceback):
-        pass
+        if exc_type is None:
+            output.write('\n')
 
     
 Section = functools.partial(SectionBase, 'section')
