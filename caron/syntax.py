@@ -98,14 +98,18 @@ def caption(content, label=None, type=None):
 
 class Line(object):
     def __iadd__(self, s):
+        s = add_indent(s)
         if len(s) == 0:
             output.write('\n')
         else:
-            s = add_indent(s)
             output.write(s)
             if s[-1] != '\n':
                 output.write('\n')
         return self
+
+
+    def __call__(self, s):
+        self.__iadd__(s)
 
 
 class Raw(object):
@@ -119,9 +123,14 @@ class Raw(object):
         return self
 
 
+    def __call__(self, s):
+        self.__iadd__(s)
+
+
 item = Item()
 line = Line()
 raw = Raw()
+
 
 class Document(object):
     def __enter__(self):
@@ -137,10 +146,17 @@ class Document(object):
 \setjamonofont{IPAGothic}
 \XeTeXlinebreaklocale "ja"
 
-\setlength{\textwidth}{17cm}
-\setlength{\textheight}{25cm}
-\setlength{\leftmargin}{-1cm}
-\setlength{\topmargin}{-2cm}
+%\def\baselinestretch{1.2}
+\setlength{\paperwidth}{210mm}
+\setlength{\paperheight}{297mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\topmargin}{0mm}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+\setlength{\footskip}{13mm}
+\setlength{\textheight}{247.6mm}
+\setlength{\textwidth}{159.2mm}
 
 \usepackage{url}
 \usepackage{graphicx}
@@ -246,7 +262,7 @@ class Document(object):
 \newcommand{\figcaption}[1]{\def\@captype{figure}\caption{#1}}
 \newcommand{\tblcaption}[1]{\def\@captype{table}\caption{#1}}
 
-\def\sourcecodename{ソースコード}
+\def\sourcecodecaption{ソースコード}
 
 \newcounter{caronsourcecodecounter}
 \setcounter{caronsourcecodecounter}{0}
@@ -317,11 +333,6 @@ class SectionBase(object):
         if exc_type is None:
             output.write('\n')
 
-    
-Section = functools.partial(SectionBase, 'section')
-SubSection = functools.partial(SectionBase, 'subsection')
-SubSubSection = functools.partial(SectionBase, 'subsubsection')
-
 
 class SourceCode(object):
     def __init__(self, filename, caption=None, language=None, label=None, encoding=None):
@@ -348,6 +359,7 @@ class SourceCode(object):
         self.encoding = encoding
         self.label = label
 
+
     def __enter__(self):
         write_indent()
         output.write('\\begin{caronsourcecode}')
@@ -370,14 +382,27 @@ class SourceCode(object):
             'commandchars',
             r'frame=single,'
             r'fontsize=\small,'
-            r'label=\textrm{{\sourcecodename\thecaronsourcecodecounter\ \ {0}}},'
+            r'label=\textrm{{\sourcecodecaption\thecaronsourcecodecounter\ \ {0}}},'
             r'commandchars'.format(self.caption)
         ))
+
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type is None:
             write_indent()
             output.write('\\end{caronsourcecode}\n')
+
+
+class Equation(object):
+    def __enter__(self):
+        write_indent()
+        output.write('\\[\n')
+
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        if exc_type is None:
+            write_indent()
+            output.write('\\]\n')
 
 
 class Environment(object):
@@ -392,12 +417,14 @@ class Environment(object):
 
         self.begin += '\n'
 
+
     def __enter__(self):
         write_indent()
         output.write(self.begin)
 
         global indent
         indent += 1
+
 
     def __exit__(self, exc_type, exc_value, traceback):
         if exc_type is None:
@@ -406,6 +433,12 @@ class Environment(object):
             write_indent()
 
             output.write(self.end)
+
+
+Section = functools.partial(SectionBase, 'section')
+SubSection = functools.partial(SectionBase, 'subsection')
+SubSubSection = functools.partial(SectionBase, 'subsubsection')
+Paragraph = functools.partial(SectionBase, 'paragraph')
 
 
 Itemize = functools.partial(Environment, 'itemize')

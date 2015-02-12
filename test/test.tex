@@ -10,10 +10,17 @@
 \setjamonofont{IPAGothic}
 \XeTeXlinebreaklocale "ja"
 
-\setlength{\textwidth}{17cm}
-\setlength{\textheight}{25cm}
-\setlength{\leftmargin}{-1cm}
-\setlength{\topmargin}{-2cm}
+%\def\baselinestretch{1.2}
+\setlength{\paperwidth}{210mm}
+\setlength{\paperheight}{297mm}
+\setlength{\oddsidemargin}{0mm}
+\setlength{\evensidemargin}{0mm}
+\setlength{\topmargin}{0mm}
+\setlength{\headheight}{0mm}
+\setlength{\headsep}{0mm}
+\setlength{\footskip}{13mm}
+\setlength{\textheight}{247.6mm}
+\setlength{\textwidth}{159.2mm}
 
 \usepackage{url}
 \usepackage{graphicx}
@@ -119,7 +126,7 @@
 \newcommand{\figcaption}[1]{\def\@captype{figure}\caption{#1}}
 \newcommand{\tblcaption}[1]{\def\@captype{table}\caption{#1}}
 
-\def\sourcecodename{ソースコード}
+\def\sourcecodecaption{ソースコード}
 
 \newcounter{caronsourcecodecounter}
 \setcounter{caronsourcecodecounter}{0}
@@ -152,7 +159,7 @@
 
 \subsection{sub section 2}
 \begin{caronsourcecode}{test.py}
-\begin{Verbatim}[frame=single,fontsize=\small,label=\textrm{\sourcecodename\thecaronsourcecodecounter\ \ test.py},commandchars=\\\{\}]
+\begin{Verbatim}[frame=single,fontsize=\small,label=\textrm{\sourcecodecaption\thecaronsourcecodecounter\ \ test.py},commandchars=\\\{\}]
 \PY{n}{preamble} \PY{o}{=} \PY{p}{\PYZob{}}
     \PY{l+s}{\PYZsq{}}\PY{l+s}{title}\PY{l+s}{\PYZsq{}}\PY{p}{:} \PY{l+s}{\PYZsq{}}\PY{l+s}{Test}\PY{l+s}{\PYZsq{}}\PY{p}{,}
     \PY{l+s}{\PYZsq{}}\PY{l+s}{author}\PY{l+s}{\PYZsq{}}\PY{p}{:} \PY{l+s}{\PYZsq{}}\PY{l+s}{quarter}\PY{l+s}{\PYZsq{}}\PY{p}{,}
@@ -173,8 +180,16 @@
         \PY{k}{with} \PY{n}{SubSection}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{sub section 2}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
             \PY{k}{with} \PY{n}{SourceCode}\PY{p}{(}\PY{l+s}{\PYZsq{}}\PY{l+s}{test.py}\PY{l+s}{\PYZsq{}}\PY{p}{)}\PY{p}{:}
                 \PY{k}{pass}
+
+            \PY{k}{with} \PY{n}{Itemize}\PY{p}{(}\PY{p}{)}\PY{p}{:}
+                \PY{n}{item} \PY{o}{+}\PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{a}\PY{l+s}{\PYZsq{}}
+                \PY{n}{item} \PY{o}{+}\PY{o}{=} \PY{l+s}{\PYZsq{}}\PY{l+s}{b}\PY{l+s}{\PYZsq{}}
 \end{Verbatim}
 \end{caronsourcecode}
+\begin{itemize}
+  \item a
+  \item b
+\end{itemize}
 
 
 \end{document}

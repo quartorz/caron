@@ -18,3 +18,7 @@ with Document():
         with SubSection('sub section 2'):
             with SourceCode('test.py'):
                 pass
+
+            with Itemize():
+                item += 'a'
+                item += 'b'
